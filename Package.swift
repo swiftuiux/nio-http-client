@@ -5,17 +5,30 @@ import PackageDescription
 
 let package = Package(
     name: "nio-http-client",
+    platforms: [
+            .macOS(.v10_15),
+            .iOS(.v13),
+        ],
     products: [
         // Products define the executables and libraries a package produces, making them visible to other packages.
         .library(
             name: "nio-http-client",
             targets: ["nio-http-client"]),
     ],
+    dependencies: [
+        // Add the swift-near package dependency here
+        .package(url: "https://github.com/apple/swift-nio.git", from: "2.32.0"),
+    ],
     targets: [
         // Targets are the basic building blocks of a package, defining a module or a test suite.
         // Targets can depend on other targets in this package and products from dependencies.
         .target(
-            name: "nio-http-client"),
+            name: "nio-http-client",
+            dependencies: [
+                // Add swift-near as a target dependency
+                .product(name: "NIO", package: "swift-nio"),
+                .product(name: "NIOHTTP1", package: "swift-nio"),
+            ]),
         .testTarget(
             name: "nio-http-clientTests",
             dependencies: ["nio-http-client"]),
